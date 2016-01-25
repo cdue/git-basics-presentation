@@ -21,7 +21,6 @@ RUN git clone https://github.com/hakimel/reveal.js.git
 RUN cd reveal.js; npm install
 
 # Replace example slides given with reveal.js with our slides
-# COPY index.html /slides/
 RUN rm /reveal.js/index.html
 RUN ln -s /slides/index.html /reveal.js/index.html
 RUN ln -s /slides/assets /reveal.js/assets

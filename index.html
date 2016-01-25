@@ -54,13 +54,224 @@
 				</section>
 
 				<section>
-					<h2>What is Git?</h2>
-          <p>
-            Git a VCS
-          </p>
+					<section>
+						<h2>What is Git?</h2>
+	          <p>
+	            Git is a VCS (Version Control System).
+	          </p>
+						<br/>
+						<p class="fragment">Not a local one, like RCS.</p>
+						<p class="fragment">Not a centralized one, like CVS or SVN.</p>
+						<p class="fragment">It's a distributed one, like Mercurial.</p>
+					</section>
+					<section>
+						<p>
+								 Created from 2005 by Linus Torvald and the Linux dev community to replace the VCS they were using for Linux kernel (BitKeeper).
+						</p>
+						<aside class="notes">
+							Git goals at start:
+    					<ul>
+								<li>Speed</li>
+    						<li>Simple design</li>
+    						<li>Strong support for non-linear development (thousands of parallel branches)</li>
+    						<li>Fully distributed</li>
+    						<li>Able to handle large projects like the Linux kernel efficiently (speed and data size)</li>
+							</ul>
+						<aside>
+					</section>
 				</section>
 
+        <section>
+          <section>
+            <h2>Git VS older VCS</h2>
+            <h3>Compared to CVS, SVN... Git is:</h3>
+            <div class="fragment">
+              <ul style="display:inline-block; vertical-align: middle">
+                <li>harder</li>
+                <li>better</li>
+                <li>faster</li>
+                <li>stronger</li>
+              </ul>
+              <img src="assets/daft_punk.jpg" width="300" style="background: none; border:none; box-shadow:none; vertical-align: middle; margin-left: 30px"/>
+            </div>
 
+            <p class="fragment">Almost...</p>
+
+          </section>
+
+          <section>
+            <h2>Git VS older VCS</h2>
+            <h3>Compared to CVS, SVN... Git:</h3>
+            <ul>
+              <li class="fragment">is distributed</li>
+              <li class="fragment">works offline</li>
+              <li class="fragment">is faster</li>
+              <li class="fragment">repositories are much smaller</li>
+              <li class="fragment">branches are easier to use and less heavy</li>
+              <li class="fragment">branches carry their full commits history</li>
+              <li class="fragment">is less prone to repo corruption (high integrity thanks to SHA-1 usage)</li>
+              <li class="fragment">don't use incremetal version numbers (SVN do) but hashes.</li>
+            </ul>
+            <aside class="notes">
+              <ul>
+                <li>
+                    Distributed (SVN is not): every developper own a local clone of the repo.
+                </li>
+                <li>
+                    Offline: thx to the local repository, you can: commit, create/switch/merge branches, review history, etc.<br/>
+                    The entire content of the repo is stored in the .git folder. It contains metadata (tags, branches, history, etc.).
+                </li>
+								<li>
+										Faster: mostly no network overhead as most of the operations are made on you local disk.
+								</li>
+                <li>
+                    smaller repo: Mozilla project Git repo is 30x smaller than SVN one.
+                </li>
+                <li>
+                    Less corruption: because every commit is uniquely identified by a SHA-1 hash, and contains references to all its parent commits.<br/>
+                    Which mean you'll soon get informed of any corruption and will be able to fix it using another cloned repo.
+                </li>
+                <li>
+                    No incremetal version numbers: makes it harder to walk through versions in Git history.
+                </li>
+              </ul>
+            </aside>
+          </section>
+
+					<section>
+            <h2>Git VS older VCS</h2>
+            <h3>Compared to CVS, SVN... Git:</h3>
+						<br/>
+            <ul>
+              <li class="fragment">doesn't store data as "deltas" between 2 versions</li>
+              <li class="fragment">stores data as a stream of full repo snapshots on every commit</li>
+							<li class="fragment">provides a set of powerful tools</li>
+            </ul>
+            <aside class="notes">
+              <ul>
+                <li>
+                    Snapshot: if a file hasn't change between 2 commits, git only stores a link to previous file version.
+										Git is nearly like a mini filesystem.
+                </li>
+              </ul>
+            </aside>
+          </section>
+        </section>
+
+				<section>
+					<section>
+						<h2>Basic worflow </h2>
+	          <h3>The 3 states</h3>
+						<br/>
+						<ul>
+              <li>commited</li>
+              <li>modified</li>
+              <li>staged</li>
+						</ul>
+						<aside class="notes">
+              <ul>
+                <li>
+									commited: data safely stored in local database
+                </li>
+								<li>
+									modified: file changed but not committed to database
+                </li>
+								<li>
+									staged: modified file marked in its current version to go into the next commit snapshot
+                </li>
+              </ul>
+            </aside>
+					</section>
+					<section>
+						<h2>Basic worflow </h2>
+	          <h3>The 3 states</h3>
+						<img src="assets/3states.png" width="60%" style="background: none; border:none; box-shadow:none;"/>
+						<aside class="notes">
+							<p>
+								Basic Git workflow:
+								<ol>
+									<li>You modify files in your working directory.</li>
+									<li>You stage the files, adding snapshots of them to your staging area.</li>
+									<li>You do a commit, which takes the files as they are in the staging area and stores that snapshot permanently to your Git directory.</li>
+								</ol>
+							</p>
+						</aside>
+					</section>
+				</section>
+
+				<section>
+					<h2>Command line or GUI?</h2>
+					<p>
+						Obviously: command line<br/>
+						<small>If you want to take full advantage of git commands.</small>
+					</p>
+					<p>
+						Or you can use GUIs (Eclipse plugin, Smart Git, or whatever).<br/>
+						<small>If you want to use basic commands in a nice looking way.</small>
+					</p>
+					<aside class="notes">
+          </aside>
+				</section>
+
+				<section>
+					<h2>Pull request</h2>
+					<aside class="notes">
+          </aside>
+				</section>
+
+				<section>
+					<section>
+						<h2>Main workflows</h2>
+						<aside class="notes">
+	          </aside>
+					</section>
+					<section>
+						<h2>Centralized</h2>
+						<aside class="notes">
+	          </aside>
+					</section>
+					<section>
+						<h2>Feature branch</h2>
+						<aside class="notes">
+	          </aside>
+					</section>
+					<section>
+						<h2>Gitflow</h2>
+						<aside class="notes">
+	          </aside>
+					</section>
+					<section>
+						<h2>Forking</h2>
+						<aside class="notes">
+	          </aside>
+					</section>
+					<section>
+						<h2>Branch Per Feature</h2>
+						<aside class="notes">
+	          </aside>
+					</section>
+				</section>
+
+				<section>
+					<h2>Migrating to Git</h2>
+					<aside class="notes">
+          </aside>
+				</section>
+
+				<section>
+					<section>
+						<h1>The end</h1>
+						<p class="fragment">Of course not...</p>
+						<p class="fragment">Let's practice a bit!</p>
+						<aside class="notes">
+	          </aside>
+					</section>
+					<section>
+							<h2>First lesson: working with branches</h2>
+							<h3>Start by checking out a branch:</h3>
+  						<pre><code data-trim data-noescape class="hljs">git checkout f-demo-working_with_branches</code></pre>
+					</section>
+				</section>
 
 				<section>
           <h3>Thanks for listening</h3>

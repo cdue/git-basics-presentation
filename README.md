@@ -35,6 +35,8 @@ $ docker run -d -v $(pwd):/slides/ -p 8000:8000 "cdue/revealjs:latest"
 ```
 This will also mount a volume (/slides/) on your container so that reveal.js can use the content of current directory.
 
+Note: Windows user may add a '/' before $(pwd)
+
 4. Verify installation
 Now that you ran the reveal.js container, you should be able to load the slideshow in your web browser.
 
@@ -64,4 +66,10 @@ $ docker ps -a
 $ sudo docker exec -i -t [id or name] bash
 ```
 
-## Presentation storyboard
+## Presentation
+
+### Speaker notes
+If you used the provided DockerFile then you're running reveal.js on a local web server, which mean you can use the Speaker notes mode.
+Press 'S' key on your keyboard and you'll get another browser window containing the slide you're presenting, a preview of next slide, a timer, and (wait for it...) you speaker notes!
+
+### Storyboard
