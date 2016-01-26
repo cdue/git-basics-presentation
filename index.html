@@ -457,8 +457,74 @@
 							<h1>First lesson:</h1>
 							<h2>working with branches</h2><br/>
 							<h3>Start by checking out a branch:</h3>
-  						<pre><code data-trim data-noescape class="hljs">git checkout f-demo-working_with_branches</code></pre>
+  						<pre><code data-trim data-noescape class="hljs bash">$ git checkout f-demo-working_with_branches</code></pre>
 					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>Working with branches</h2>
+						<ul>
+							<li>
+								Listing branches:<br/>
+								<ul>
+									<li>
+										local:<br/>
+										<pre><code data-trim data-noescape class="hljs bash">$ git branch</code></pre>
+									</li>
+									<li>
+										remote:<br/>
+										<pre><code data-trim data-noescape class="hljs bash">$ git branch -r</code></pre>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<aside class="notes">
+	          </aside>
+					</section>
+					<section>
+						<h2>Working with branches</h2>
+						<ul>
+							<li>
+								Creating a new branch:
+								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git branch f-demo-new_branch<br/>$ git checkout f-demo-new_branch</code></pre>
+								or
+								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git checkout -b f-demo-new_branch</code></pre>
+							</li>
+							<li>
+								Pushing a branch to remote server:
+								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git push origin f-demo-new_branch</code></pre>
+							</li>
+							<li>
+								Pulling code from remote:
+								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git pull origin f-demo-new_branch</code></pre>
+							</li>
+						</ul>
+						<aside class="notes">
+							Create the given branch, and show it exists only localy, then push it and show it appears on remote server.
+	          </aside>
+					</section>
+					<section>
+						<h2>Working with branches</h2>
+						<ul>
+							<li>
+								Merging 2 branches:
+								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git checkout [branch_to_merge_to]<br/>$ git merge [branch_to_merge]</code></pre>
+								You may have to deal with conflicts, <br/>we'll see how to do so later.
+							</li>
+						</ul>
+						<aside class="notes">
+							Try this after you added some commits (chapter: f-demo-working_with_commits).
+	          </aside>
+					</section>
+				</section>
+
+				<section>
+          <h3>OK, now you know a bit more about branches</h3>
+					<p>
+						We should talk about commits:
+						<pre><code data-trim data-noescape class="hljs bash">$ git checkout f-demo-working_with_commits</code></pre>
+					</p>
 				</section>
 
 				<section>
