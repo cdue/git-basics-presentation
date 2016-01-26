@@ -216,31 +216,120 @@
 				<section>
 					<section>
 						<h2>Main workflows</h2>
+						<p>
+							You can work with Git in many ways.<br/>
+							Here are some commonly used workflows.<br/>
+							But you can pick up the best of each and mix it to fit your needs.<br/>
+							<small style="margin-top:60px">
+								Find more info about workflows on:<br/>
+								<a href="https://es.atlassian.com/git/tutorials/comparing-workflows/">https://es.atlassian.com/git/tutorials/comparing-workflows/</a>
+							</small>
+						</p>
 						<aside class="notes">
 	          </aside>
 					</section>
 					<section>
 						<h2>Centralized</h2>
+						<p style="margin-bottom: 40px">
+							Mostly, looks like SVN workflow.<br/>
+							But brings some of the Git power.
+						</p>
+						<ul>
+							<li>Single branch used (master)</li>
+							<li>Conflicts are managed by: <br/>fetching from remote / rebasing / pushing</li>
+							<li>Linear history</li>
+						</ul>
 						<aside class="notes">
+							Single point of entry for every developper<br/>
+							trunk (SVN) = master (Git)<br/>
+							Difference: Every local commits are pushed at the same time.<br/>
+							Linear history: if conflits, you must rebase so that your work appears on top of other developpers' work.<br/>
 	          </aside>
 					</section>
 					<section>
 						<h2>Feature branch</h2>
+						<ul style="margin-bottom: 40px">
+							<li>1 feature = 1 branch (with explicit name)</li>
+							<li>Multiple developers can work on the same feature</li>
+							<li>Work in progress do not disturb main codebase</li>
+							<li>master contains official/production-ready code</li>
+							<li>Easy CI on master branch</li>
+							<li>Pull request ready</li>
+						</ul>
+						<img src="assets/feature-branch-workflow.svg" width="60%" style="background: white; border:none; box-shadow:none;"/>
 						<aside class="notes">
+							Easy continuous integration: master branch should never contain broken code.<br/>
+							Pull requests: can be use between developers to discuss others features:<br/>
+							<ul>
+								<li>if someone needs some help</li>
+								<li>if a code review is needed</li>
+							</ul>
+							This workflow still uses a centralized repo.
 	          </aside>
 					</section>
 					<section>
 						<h2>Gitflow</h2>
+						<ul>
+							<li>Strict and robust branching model</li>
+							<li>Based on Feature Branching working</li>
+							<li>
+								Adds specific branches for specific actions:
+								<ul>
+									<li>master = production release history (tags)</li>
+									<li>develop = features integration</li>
+									<li>release = production release build (+ feature fix)</li>
+									<li>hotfix = quick production maintenance patches</li>
+								</ul>
+							</li>
+						</ul>
+						<p>
+							<small style="margin-top:50px">
+								See original description of this worflow by Vincent Drissen:<br/>
+								<a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a><br/>
+								And really good branching tools:<br/>
+								<a href="http://danielkummer.github.io/git-flow-cheatsheet/index.html">http://danielkummer.github.io/git-flow-cheatsheet/index.html</a>
+							</small>
+						</p>
+						<aside class="notes">
+							This workflow still uses a centralized repo.
+	          </aside>
+					</section>
+					<section>
+						<h2>Gitflow</h2>
+						<img src="assets/gitflow-workflow.svg" width="80%" style="background: white; border:none; box-shadow:none;"/>
 						<aside class="notes">
 	          </aside>
 					</section>
 					<section>
 						<h2>Forking</h2>
+						<ul>
+							<li>No centralized repo</li>
+							<li>
+								Every developer owns 2 local repositories:
+								<ul>
+									<li>a public server one</li>
+									<li>a private client one</li>
+								</ul>
+							</li>
+							<li>Developers push to their local server</li>
+							<li>Developers can pull from official server</li>
+							<li>Project maintainer can pull from dervelopers repos</li>
+							<li>Project maintainer (only) can push to the official repo</li>
+							<li>Secure workflow</li>
+							<li>Ideal for open source projects</li>
+						</ul>
+						<aside class="notes">
+	          </aside>
+					</section>
+					<section>
+						<h2>Forking</h2>
+						<img src="assets/forking-workflow.svg" width="80%" style="background: white; border:none; box-shadow:none;"/>
 						<aside class="notes">
 	          </aside>
 					</section>
 					<section>
 						<h2>Branch Per Feature</h2>
+						<p>...</p>
 						<aside class="notes">
 	          </aside>
 					</section>
