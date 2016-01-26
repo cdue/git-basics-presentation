@@ -329,7 +329,19 @@
 					</section>
 					<section>
 						<h2>Branch Per Feature</h2>
-						<p>...</p>
+						<p>
+							Described by <a href="https://twitter.com/adymitruk">Adam Dymitruk</a>, this workflow is a bit more "confidential" but it brings some new ideas:
+							<ul>
+								<li>Features are small, atomic, flexible</li>
+								<li>Every feature branch have the same source commit</li>
+								<li>You must integrate as often as possible</li>
+								<li>Conflict resolutions are shared using Git rerere</li>
+								<li>You can easily take a feature out of a release build</li>
+							</ul>
+						</p>
+						<small style="margin-top:40px">
+							See <a href="http://dymitruk.com/blog/2012/02/05/branch-per-feature/">http://dymitruk.com/blog/2012/02/05/branch-per-feature/</a>
+						</small>
 						<aside class="notes">
 	          </aside>
 					</section>
@@ -391,9 +403,46 @@
 				</section>
 
 				<section>
-					<h2>Migrating from SVN to Git</h2>
-					<aside class="notes">
-          </aside>
+					<section>
+						<h2>Migrating from SVN to Git</h2>
+						<p>
+							Git provides importers for the most common VCSs.<br/>
+							For SVN, you just need to follow these steps:
+						</p>
+						<ul>
+							<li>
+								Create a "SVN IDs / Git Authors" mapping file (ex: user.txt):<br/>
+								<pre><code data-trim data-noescape class="hljs">svnUser = Author NAME &lt;author@email.org&gt;</code></pre>
+							</li>
+							<li>
+								Import SVN repo with:
+								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git svn clone http://svn_repo/ \ <br/> --authors-file=users.txt --no-metadata -s git_project</code></pre>
+							</li>
+							<li>
+								Importing a SVN repo creates branches instead of tags.<br/>
+								Convert them to real Git tags:
+								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ cp -Rf .git/refs/remotes/origin/tags/* .git/refs/tags/<br/>$ rm -Rf .git/refs/remotes/origin/tags</code></pre>
+							</li>
+						</ul>
+						<aside class="notes">
+	          </aside>
+					</section>
+					<section>
+						<ul>
+							<li>
+								Then convert others SVN remote refs to Git local branches:
+								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ cp -Rf .git/refs/remotes/* .git/refs/heads/ <br/>$ rm -Rf .git/refs/remotes</code></pre>
+							</li>
+							<li>
+								And eventually, add a reference to your Git server as a project "remote" and push it:
+								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git remote add origin git@my-git-server:myrepository.git <br/>$ git push origin --all</code></pre>
+							</li>
+						</ul>
+					</section>
+					<section data-background="assets/carlton.gif">
+						<h1>Here you are!</h1>
+						<h2>... Ready to use Git! ...</h2>
+					</section>
 				</section>
 
 				<section>
@@ -405,7 +454,8 @@
 	          </aside>
 					</section>
 					<section>
-							<h2>First lesson: working with branches</h2>
+							<h1>First lesson:</h1>
+							<h2>working with branches</h2><br/>
 							<h3>Start by checking out a branch:</h3>
   						<pre><code data-trim data-noescape class="hljs">git checkout f-demo-working_with_branches</code></pre>
 					</section>
