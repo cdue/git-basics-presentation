@@ -501,7 +501,8 @@
 							</li>
 						</ul>
 						<aside class="notes">
-							Create the given branch, and show it exists only localy, then push it and show it appears on remote server.
+							Create the given branch, and show it exists only localy.<br/>
+							If you want, you can push it and show it appears on remote server.<br/>
 	          </aside>
 					</section>
 					<section>
@@ -515,6 +516,31 @@
 						</ul>
 						<aside class="notes">
 							Try this after you added some commits (chapter: f-demo-working_with_commits).
+	          </aside>
+					</section>
+					<section>
+						<h2>Working with branches</h2>
+						<ul>
+							<li>
+								Deleting a branch:
+								<ul>
+									<li>
+										Local:
+										<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git branch -D [branch_to_delete]</code></pre>
+										-D forces deletion, where -d don't. It's the same as:
+										<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git branch --delete --force [branch_to_delete]</code></pre>
+									</li>
+									<li>
+										Remote:
+										<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git push origin --delete [remote_branch_to_delete]</code></pre>
+										or
+										<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git push origin :[remote_branch_to_delete]</code></pre>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<aside class="notes">
+							-D forces deletion even if local branch is not fully merged with its upstream branc
 	          </aside>
 					</section>
 				</section>
