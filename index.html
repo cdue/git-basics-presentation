@@ -1,624 +1,677 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
+    <head>
+        <meta charset="utf-8">
+        <title>Git Basics - Live coding session</title>
+        <meta name="description" content="A presentation about Git basics with some coding examples">
+        <meta name="author" content="Cédric Dué">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/black.css" id="theme">
+        <!-- Code syntax highlighting -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+        <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="reveal">
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+                <section>
+                    <h1>Git basics</h1>
+                    <p>
+                        Learn a bit about Git during this live coding session
+                    </p>
+                    <img src="assets/logo_git.png" width="200" style="background: none; border:none; box-shadow:none;"/>
+                    <p>
+                        <a href="https://github.com/cdue/git-basics-presentation">https://github.com/cdue/git-basics-presentation</a>
+                    </p>
+                    <p>
+                        <small>Created by <a href="http://twitter.com/cedricdue">Cédric Dué</a> / <a href="http://twitter.com/cedricdue">@cedricdue</a> with <a href="http://lab.hakim.se/reveal-js">reveal.js</a></small>
+                    </p>
+                </section>
+                <section>
+                    <section>
+                        <h2>What is Git?</h2>
+                        <p>
+                            Git is a VCS (Version Control System).
+                        </p>
+                        <br/>
+                        <p class="fragment">Not a local one, like RCS.</p>
+                        <p class="fragment">Not a centralized one, like CVS or SVN.</p>
+                        <p class="fragment">It's a distributed one, like Mercurial.</p>
+                    </section>
+                    <section>
+                        <p>
+                            Created from 2005 by Linus Torvald and the Linux dev community to replace the VCS they were using for Linux kernel (BitKeeper).
+                        </p>
+                        <aside class="notes">
+                        Git goals at start:
+                        <ul>
+                            <li>Speed</li>
+                            <li>Simple design</li>
+                            <li>Strong support for non-linear development (thousands of parallel branches)</li>
+                            <li>Fully distributed</li>
+                            <li>Able to handle large projects like the Linux kernel efficiently (speed and data size)</li>
+                        </ul>
+                        <aside>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Git VS older VCS</h2>
+                        <h3>Compared to CVS, SVN... Git is:</h3>
+                        <div class="fragment">
+                            <ul style="display:inline-block; vertical-align: middle">
+                                <li>harder</li>
+                                <li>better</li>
+                                <li>faster</li>
+                                <li>stronger</li>
+                            </ul>
+                            <img src="assets/daft_punk.jpg" width="300" style="background: none; border:none; box-shadow:none; vertical-align: middle; margin-left: 30px"/>
+                        </div>
+                        <p class="fragment">Almost...</p>
+                    </section>
+                    <section>
+                        <h2>Git VS older VCS</h2>
+                        <h3>Compared to CVS, SVN... Git:</h3>
+                        <ul>
+                            <li class="fragment">is distributed</li>
+                            <li class="fragment">works offline</li>
+                            <li class="fragment">is faster</li>
+                            <li class="fragment">repositories are much smaller</li>
+                            <li class="fragment">branches are easier to use and less heavy</li>
+                            <li class="fragment">branches carry their full commits history</li>
+                            <li class="fragment">is less prone to repo corruption (high integrity thanks to SHA-1 usage)</li>
+                            <li class="fragment">don't use incremetal version numbers (SVN do) but hashes.</li>
+                        </ul>
+                        <aside class="notes">
+                            <ul>
+                                <li>
+                                    Distributed (SVN is not): every developper own a local clone of the repo.
+                                </li>
+                                <li>
+                                    Offline: thx to the local repository, you can: commit, create/switch/merge branches, review history, etc.<br/>
+                                    The entire content of the repo is stored in the .git folder. It contains metadata (tags, branches, history, etc.).
+                                </li>
+                                <li>
+                                    Faster: mostly no network overhead as most of the operations are made on you local disk.
+                                </li>
+                                <li>
+                                    smaller repo: Mozilla project Git repo is 30x smaller than SVN one.
+                                </li>
+                                <li>
+                                    Less corruption: because every commit is uniquely identified by a SHA-1 hash, and contains references to all its parent commits.<br/>
+                                    Which mean you'll soon get informed of any corruption and will be able to fix it using another cloned repo.
+                                </li>
+                                <li>
+                                    No incremetal version numbers: makes it harder to walk through versions in Git history.
+                                </li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Git VS older VCS</h2>
+                        <h3>Compared to CVS, SVN... Git:</h3>
+                        <br/>
+                        <ul>
+                            <li class="fragment">doesn't store data as "deltas" between 2 versions</li>
+                            <li class="fragment">stores data as a stream of full repo snapshots on every commit</li>
+                            <li class="fragment">provides a set of powerful tools</li>
+                        </ul>
+                        <aside class="notes">
+                            <ul>
+                                <li>
+                                    Snapshot: if a file hasn't change between 2 commits, git only stores a link to previous file version.
+                                    Git is nearly like a mini filesystem.
+                                </li>
+                            </ul>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Basic worflow </h2>
+                        <h3>The 3 states</h3>
+                        <br/>
+                        <ul>
+                            <li>commited</li>
+                            <li>modified</li>
+                            <li>staged</li>
+                        </ul>
+                        <aside class="notes">
+                            <ul>
+                                <li>
+                                    commited: data safely stored in local database
+                                </li>
+                                <li>
+                                    modified: file changed but not committed to database
+                                </li>
+                                <li>
+                                    staged: modified file marked in its current version to go into the next commit snapshot
+                                </li>
+                            </ul>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Basic worflow </h2>
+                        <h3>The 3 states</h3>
+                        <img src="assets/3states.png" width="60%" style="background: none; border:none; box-shadow:none;"/>
+                        <aside class="notes">
+                            <p>
+                                Basic Git workflow:
+                            <ol>
+                                <li>You modify files in your working directory.</li>
+                                <li>You stage the files, adding snapshots of them to your staging area.</li>
+                                <li>You do a commit, which takes the files as they are in the staging area and stores that snapshot permanently to your Git directory.</li>
+                            </ol>
+                            </p>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h2>Command line or GUI?</h2>
+                    <p>
+                        Obviously: command line<br/>
+                        <small>If you want to take full advantage of git commands.</small>
+                    </p>
+                    <p>
+                        Or you can use GUIs (Eclipse plugin, Smart Git, or whatever).<br/>
+                        <small>If you want to use basic commands in a nice looking way.</small>
+                    </p>
+                    <aside class="notes">
+                    </aside>
+                </section>
+                <section>
+                    <section>
+                        <h2>Main workflows</h2>
+                        <p>
+                            You can work with Git in many ways.<br/>
+                            Here are some commonly used workflows.<br/>
+                            But you can pick up the best of each and mix it to fit your needs.<br/>
+                            <small style="margin-top:60px">
+                            Find more info about workflows on:<br/>
+                            <a href="https://es.atlassian.com/git/tutorials/comparing-workflows/">https://es.atlassian.com/git/tutorials/comparing-workflows/</a>
+                            </small>
+                        </p>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Centralized</h2>
+                        <p style="margin-bottom: 40px">
+                            Mostly, looks like SVN workflow.<br/>
+                            But brings some of the Git power.
+                        </p>
+                        <ul>
+                            <li>Single branch used (master)</li>
+                            <li>Conflicts are managed by: <br/>fetching from remote / rebasing / pushing</li>
+                            <li>Linear history</li>
+                        </ul>
+                        <aside class="notes">
+                            Single point of entry for every developper<br/>
+                            trunk (SVN) = master (Git)<br/>
+                            Difference: Every local commits are pushed at the same time.<br/>
+                            Linear history: if conflits, you must rebase so that your work appears on top of other developpers' work.<br/>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Feature branch</h2>
+                        <ul style="margin-bottom: 40px">
+                            <li>1 feature = 1 branch (with explicit name)</li>
+                            <li>Multiple developers can work on the same feature</li>
+                            <li>Work in progress do not disturb main codebase</li>
+                            <li>master contains official/production-ready code</li>
+                            <li>Easy CI on master branch</li>
+                            <li>Pull request ready</li>
+                        </ul>
+                        <img src="assets/feature-branch-workflow.svg" width="60%" style="background: white; border:none; box-shadow:none;"/>
+                        <aside class="notes">
+                            Easy continuous integration: master branch should never contain broken code.<br/>
+                            Pull requests: can be use between developers to discuss others features:<br/>
+                            <ul>
+                                <li>if someone needs some help</li>
+                                <li>if a code review is needed</li>
+                            </ul>
+                            This workflow still uses a centralized repo.
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Gitflow</h2>
+                        <ul>
+                            <li>Strict and robust branching model</li>
+                            <li>Based on Feature Branching working</li>
+                            <li>
+                                Adds specific branches for specific actions:
+                                <ul>
+                                    <li>master = production release history (tags)</li>
+                                    <li>develop = features integration</li>
+                                    <li>release = production release build (+ feature fix)</li>
+                                    <li>hotfix = quick production maintenance patches</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p>
+                            <small style="margin-top:50px">
+                            See original description of this worflow by Vincent Drissen:<br/>
+                            <a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a><br/>
+                            And really good branching tools:<br/>
+                            <a href="http://danielkummer.github.io/git-flow-cheatsheet/index.html">http://danielkummer.github.io/git-flow-cheatsheet/index.html</a>
+                            </small>
+                        </p>
+                        <aside class="notes">
+                            This workflow still uses a centralized repo.
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Gitflow</h2>
+                        <img src="assets/gitflow-workflow.svg" width="80%" style="background: white; border:none; box-shadow:none;"/>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Forking</h2>
+                        <ul>
+                            <li>No centralized repo</li>
+                            <li>
+                                Every developer owns 2 local repositories:
+                                <ul>
+                                    <li>a public server one</li>
+                                    <li>a private client one</li>
+                                </ul>
+                            </li>
+                            <li>Developers push to their local server</li>
+                            <li>Developers can pull from official server</li>
+                            <li>Project maintainer can pull from dervelopers repos</li>
+                            <li>Project maintainer (only) can push to the official repo</li>
+                            <li>Secure workflow</li>
+                            <li>Ideal for open source projects</li>
+                        </ul>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Forking</h2>
+                        <img src="assets/forking-workflow.svg" width="80%" style="background: white; border:none; box-shadow:none;"/>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Branch Per Feature</h2>
+                        <p>
+                            Described by <a href="https://twitter.com/adymitruk">Adam Dymitruk</a>, this workflow is a bit more "confidential" but it brings some new ideas:
+                        <ul>
+                            <li>Features are small, atomic, flexible</li>
+                            <li>Every feature branch have the same source commit</li>
+                            <li>You must integrate as often as possible</li>
+                            <li>Conflict resolutions are shared using Git rerere</li>
+                            <li>You can easily take a feature out of a release build</li>
+                        </ul>
+                        </p>
+                        <small style="margin-top:40px">
+                        See <a href="http://dymitruk.com/blog/2012/02/05/branch-per-feature/">http://dymitruk.com/blog/2012/02/05/branch-per-feature/</a>
+                        </small>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Pull request</h2>
+                        <ul>
+                            <li>Collaborate to a project (notify team members)</li>
+                            <li>Propose code instead of pushing it</li>
+                            <li>Forum to discuss about the proposed feature </li>
+                            <li>Code reviewed by team members before being merged into the project</li>
+                            <li>Follow-up commits</li>
+                            <li>The whole activity around the proposed feature is stored in the pull request</li>
+                            <li>Incompatible with Centralized workflow</li>
+                        </ul>
+                        <aside class="notes">
+                            Instead of directly pushing his code on a repo, a developper who wants to collaborate to a project can send a pull request.<br/>
+                            His code will be reviewed before being integrated, and developpers can discuss of the feature to integrate in a user-friendly web interface.<br/>
+                            <br/>
+                            Follow-up commits can be added by teammates to modify the feature before integrating it.<br/>
+                            <br/>
+                            Discussions about proposed feature aren't lost in emails.
+                            <br/>
+                            Incompatible with Centralized workflow because it needs 2 repos or 2 branches.
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Pull request general process</h2>
+                        <p>A developper wants to collaborate to a project. What he has to do is:</p>
+                        <ul>
+                            <li>Clone the project / Fork and clone the project</li>
+                            <li>Create a new local branch</li>
+                            <li>Code, code, code...</li>
+                            <li>Push branch to a public repo</li>
+                            <li>Fill a pull request form</li>
+                            <li>Project teammates review, [discuss, modify] the code</li>
+                            <li>Project maintainer merges the feature into an offical branch</li>
+                            <li>Project maintainer closes the pull request</li>
+                        </ul>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Pull request example</h2>
+                        <h3>Open</h3>
+                        <img src="assets/pull-request-review-page.png" width="50%" style="background: none; border:none; box-shadow:none;"/>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Pull request example</h2>
+                        <h3>Discuss</h3>
+                        <img src="assets/pull-request-discussion.png" width="60%" style="background: none; border:none; box-shadow:none;"/>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Migrating from SVN to Git</h2>
+                        <p>
+                            Git provides importers for the most common VCSs.<br/>
+                            For SVN, you just need to follow these steps:
+                        </p>
+                        <ul>
+                            <li>
+                                Create a "SVN IDs / Git Authors" mapping file (ex: user.txt):<br/>
+                                <pre><code data-trim data-noescape class="hljs">svnUser = Author NAME &lt;author@email.org&gt;</code></pre>
+                            </li>
+                            <li>
+                                Import SVN repo with:
+                                <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git svn clone http://svn_repo/ \ <br/> --authors-file=users.txt --no-metadata -s git_project</code></pre>
+                            </li>
+                            <li>
+                                Importing a SVN repo creates branches instead of tags.<br/>
+                                Convert them to real Git tags:
+                                <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ cp -Rf .git/refs/remotes/origin/tags/* .git/refs/tags/<br/>$ rm -Rf .git/refs/remotes/origin/tags</code></pre>
+                            </li>
+                        </ul>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <ul>
+                            <li>
+                                Then convert others SVN remote refs to Git local branches:
+                                <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ cp -Rf .git/refs/remotes/* .git/refs/heads/ <br/>$ rm -Rf .git/refs/remotes</code></pre>
+                            </li>
+                            <li>
+                                And eventually, add a reference to your Git server as a project "remote" and push it:
+                                <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git remote add origin git@my-git-server:myrepository.git <br/>$ git push origin --all</code></pre>
+                            </li>
+                        </ul>
+                    </section>
+                    <section data-background="assets/carlton.gif">
+                        <h1>Here you are!</h1>
+                        <h2>... Ready to use Git! ...</h2>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h1>The end</h1>
+                        <p class="fragment">Of course not...</p>
+                        <p class="fragment">Let's practice a bit!</p>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h1>First lesson:</h1>
+                        <h2>working with branches</h2>
+                        <br/>
+                        <h3>Start by checking out a branch:</h3>
+                        <pre><code data-trim data-noescape class="hljs bash">$ git checkout f-demo-working_with_branches</code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Working with branches</h2>
+                        <ul>
+                            <li>
+                                Listing branches:<br/>
+                                <ul>
+                                    <li>
+                                        local:<br/>
+                                        <pre><code data-trim data-noescape class="hljs bash">$ git branch</code></pre>
+                                    </li>
+                                    <li>
+                                        remote:<br/>
+                                        <pre><code data-trim data-noescape class="hljs bash">$ git branch -r</code></pre>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Working with branches</h2>
+                        <ul>
+                            <li>
+                                Creating a new branch:
+                                <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git branch f-demo-new_branch<br/>$ git checkout f-demo-new_branch</code></pre>
+                                or
+                                <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git checkout -b f-demo-new_branch</code></pre>
+                            </li>
+                            <li>
+                                Pushing a branch to remote server:
+                                <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git push origin f-demo-new_branch</code></pre>
+                            </li>
+                            <li>
+                                Pulling code from remote:
+                                <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git pull origin f-demo-new_branch</code></pre>
+                            </li>
+                        </ul>
+                        <aside class="notes">
+                            Create the given branch, and show it exists only localy.<br/>
+                            If you want, you can push it and show it appears on remote server.<br/>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Working with branches</h2>
+                        <ul>
+                            <li>
+                                Merging 2 branches:
+                                <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git checkout [branch_to_merge_to]<br/>$ git merge [branch_to_merge]</code></pre>
+                                You may have to deal with conflicts, <br/>we'll see how to do so later.
+                            </li>
+                        </ul>
+                        <aside class="notes">
+                            Try this after you added some commits (chapter: f-demo-working_with_commits).
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Working with branches</h2>
+                        <ul>
+                            <li>
+                                Deleting a branch:
+                                <ul>
+                                    <li>
+                                        Local:
+                                        <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git branch -D [branch_to_delete]</code></pre>
+                                        -D forces deletion, where -d don't. It's the same as:
+                                        <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git branch --delete --force [branch_to_delete]</code></pre>
+                                    </li>
+                                    <li>
+                                        Remote:
+                                        <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git push origin --delete [remote_branch_to_delete]</code></pre>
+                                        or
+                                        <pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git push origin :[remote_branch_to_delete]</code></pre>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <aside class="notes">
+                            -D forces deletion even if local branch is not fully merged with its upstream branc
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h3>OK, now you know a bit more about branches</h3>
+                    <p>
+                        We should talk about commits:
+                        <pre><code data-trim data-noescape class="hljs bash">$ git checkout f-demo-working_with_commits</code></pre>
+                        <br/>
+                        <!-- <small>See how you can swith to another branch <br/>(if you don't get if locally, Git will download it)</small> -->
+                    </p>
+                </section>
+                <section>
+                    <section>
+                        <h3>Working with commits</h3>
+                        <p>
+                            Remember that commiting is a local action.<br/>
+                            Everything you do can be undone.
+                            <small>It's also true for pushed code but it's a little bit more tricky.</small>
+                            <br/><br/>
+                            First you need to fully understand these keywords:
+                            <ul>
+                                <li>Untracked file</li>
+                                <li>Unstaged / staged files</li>
+                                <li>Staging area / index</li>
+                                <li>Commited files</li>
+                            </ul>
+                        <br/>
+                        </p>
+                    </section>
+                    <section>
+                        <h3>Typical commit worflow</h3>
+                        <p>
+                            <ul>
+                                <li>Create / modify files</li>
+                                <li>
+                                    Add them to the staging area:
+                                    <pre><code data-trim data-noescape class="hljs bash">$ git add file1 file2</code></pre>
+                                </li>
+                                <li>Review staged files before commiting:
+                                    <pre><code data-trim data-noescape class="hljs bash">$ git status<br/>On branch f-demo-working_with_commits<br/>Changes to be committed:<br/>  (use "git reset HEAD &lt;file&gt;..." to unstage)<br/><br/>        modified:   index.html<br/><br/>Changes not staged for commit:<br/>  (use "git add &lt;file&gt;..." to update what will be committed)<br/>  (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)<br/><br/>        modified:   README.md</code></pre>
+                                </li>
+                            </ul>
+                        </p>
+                    </section>
+                    <section>
+                        <h3>Typical commit worflow</h3>
+                        <p>
+                            <ul style="width:80%">
+                                <li>
+                                    Commit files (giving an explicit message)
+                                    <pre><code data-trim data-noescape class="hljs bash">$ git commit -m "feat(git-basics): git commit slides<br/><br/>Adding some slides about git typical commit workflow<br/><br/>UserStory #003<br/>"</code></pre>
+                                    <small>
+                                        Confer to commit message conventions for a better Git history lisibility.<br/>
+                                        For example: <a href="https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit">Angular.js commit conventions</a>
+                                    </small>
+                                </li>
+                                <li style="margin-top:30px">
+                                    Push your commit(s) to remote server:
+                                    <pre><code data-trim data-noescape class="hljs bash">$ git push origin remote_branch</code></pre>
+                                </li>
+                            </ul>
+                        </p>
+                        <aside class="notes">
+                            Edit this presentation index.html.<br/>
+                            For example:<br/>
+                            Go to page &lt;head&gt; tag, locate the following line:<br/>
+                            &lt;link rel="stylesheet" href="css/theme/moon.css" id="theme"&gt;<br/>
+                            And replace "black" with "moon".<br/>
+                            Then commit this file to a newly created branch.
 
-		<title>Git Basics - Live coding session</title>
-
-		<meta name="description" content="A presentation about Git basics with some coding examples">
-		<meta name="author" content="Cédric Dué">
-
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css" id="theme">
-
-		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
-
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
-
-	<body>
-
-		<div class="reveal">
-
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				<section>
-					<h1>Git basics</h1>
-					<p>
-						Learn a bit about Git during this live coding session
-					</p>
-          <img src="assets/logo_git.png" width="200" style="background: none; border:none; box-shadow:none;"/>
-					<p>
-						<a href="https://github.com/cdue/git-basics-presentation">https://github.com/cdue/git-basics-presentation</a>
-					</p>
-					<p>
-						<small>Created by <a href="http://twitter.com/cedricdue">Cédric Dué</a> / <a href="http://twitter.com/cedricdue">@cedricdue</a> with <a href="http://lab.hakim.se/reveal-js">reveal.js</a></small>
-					</p>
-				</section>
-
-				<section>
-					<section>
-						<h2>What is Git?</h2>
-	          <p>
-	            Git is a VCS (Version Control System).
-	          </p>
-						<br/>
-						<p class="fragment">Not a local one, like RCS.</p>
-						<p class="fragment">Not a centralized one, like CVS or SVN.</p>
-						<p class="fragment">It's a distributed one, like Mercurial.</p>
-					</section>
-					<section>
-						<p>
-								 Created from 2005 by Linus Torvald and the Linux dev community to replace the VCS they were using for Linux kernel (BitKeeper).
-						</p>
-						<aside class="notes">
-							Git goals at start:
-    					<ul>
-								<li>Speed</li>
-    						<li>Simple design</li>
-    						<li>Strong support for non-linear development (thousands of parallel branches)</li>
-    						<li>Fully distributed</li>
-    						<li>Able to handle large projects like the Linux kernel efficiently (speed and data size)</li>
-							</ul>
-						<aside>
-					</section>
-				</section>
-
-        <section>
-          <section>
-            <h2>Git VS older VCS</h2>
-            <h3>Compared to CVS, SVN... Git is:</h3>
-            <div class="fragment">
-              <ul style="display:inline-block; vertical-align: middle">
-                <li>harder</li>
-                <li>better</li>
-                <li>faster</li>
-                <li>stronger</li>
-              </ul>
-              <img src="assets/daft_punk.jpg" width="300" style="background: none; border:none; box-shadow:none; vertical-align: middle; margin-left: 30px"/>
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h3>You're doing good</h3>
+                    <p>
+                        From here, you're knowing enought about Git to use it as you were using SVN.<br/>
+                        And you're already getting some of Git advantages such as: offline repository, distibuted workflow, etc.
+                    </p>
+                    <p class="fragment" style="padding-top:30px">
+                        But to be honest, you just know a few things.<br/>
+                        So let's improve your Git power!
+                    </p>
+                    <aside class="notes">
+                        
+                    </aside>
+                </section>
+                <section>
+                    <h3>What about a bit of magic?</h3>
+                    <img src="assets/merlin.png" width="30%" style="background: none; border:none; box-shadow:none;"/>
+                    <pre class="fragment"><code data-trim data-noescape class="hljs bash">$ git checkout f-demo-learn_git_magic</code></pre>
+                    <aside class="notes">
+                        
+                    </aside>
+                </section>
+                <section>
+                    <h3>Thanks for listening</h3>
+                    <p>
+                        Licensed under the <a href="https://github.com/cdue/git-basics-presentation/blob/master/LICENSE-MIT">MIT license</a>.
+                    </p>
+                    <hr>
+                    <p>
+                        <small>Created with <a href="http://lab.hakim.se/reveal-js">reveal.js</a> - The HTML Presentation Framework</small>
+                    </p>
+                </section>
             </div>
-
-            <p class="fragment">Almost...</p>
-
-          </section>
-
-          <section>
-            <h2>Git VS older VCS</h2>
-            <h3>Compared to CVS, SVN... Git:</h3>
-            <ul>
-              <li class="fragment">is distributed</li>
-              <li class="fragment">works offline</li>
-              <li class="fragment">is faster</li>
-              <li class="fragment">repositories are much smaller</li>
-              <li class="fragment">branches are easier to use and less heavy</li>
-              <li class="fragment">branches carry their full commits history</li>
-              <li class="fragment">is less prone to repo corruption (high integrity thanks to SHA-1 usage)</li>
-              <li class="fragment">don't use incremetal version numbers (SVN do) but hashes.</li>
-            </ul>
-            <aside class="notes">
-              <ul>
-                <li>
-                    Distributed (SVN is not): every developper own a local clone of the repo.
-                </li>
-                <li>
-                    Offline: thx to the local repository, you can: commit, create/switch/merge branches, review history, etc.<br/>
-                    The entire content of the repo is stored in the .git folder. It contains metadata (tags, branches, history, etc.).
-                </li>
-								<li>
-										Faster: mostly no network overhead as most of the operations are made on you local disk.
-								</li>
-                <li>
-                    smaller repo: Mozilla project Git repo is 30x smaller than SVN one.
-                </li>
-                <li>
-                    Less corruption: because every commit is uniquely identified by a SHA-1 hash, and contains references to all its parent commits.<br/>
-                    Which mean you'll soon get informed of any corruption and will be able to fix it using another cloned repo.
-                </li>
-                <li>
-                    No incremetal version numbers: makes it harder to walk through versions in Git history.
-                </li>
-              </ul>
-            </aside>
-          </section>
-
-					<section>
-            <h2>Git VS older VCS</h2>
-            <h3>Compared to CVS, SVN... Git:</h3>
-						<br/>
-            <ul>
-              <li class="fragment">doesn't store data as "deltas" between 2 versions</li>
-              <li class="fragment">stores data as a stream of full repo snapshots on every commit</li>
-							<li class="fragment">provides a set of powerful tools</li>
-            </ul>
-            <aside class="notes">
-              <ul>
-                <li>
-                    Snapshot: if a file hasn't change between 2 commits, git only stores a link to previous file version.
-										Git is nearly like a mini filesystem.
-                </li>
-              </ul>
-            </aside>
-          </section>
-        </section>
-
-				<section>
-					<section>
-						<h2>Basic worflow </h2>
-	          <h3>The 3 states</h3>
-						<br/>
-						<ul>
-              <li>commited</li>
-              <li>modified</li>
-              <li>staged</li>
-						</ul>
-						<aside class="notes">
-              <ul>
-                <li>
-									commited: data safely stored in local database
-                </li>
-								<li>
-									modified: file changed but not committed to database
-                </li>
-								<li>
-									staged: modified file marked in its current version to go into the next commit snapshot
-                </li>
-              </ul>
-            </aside>
-					</section>
-					<section>
-						<h2>Basic worflow </h2>
-	          <h3>The 3 states</h3>
-						<img src="assets/3states.png" width="60%" style="background: none; border:none; box-shadow:none;"/>
-						<aside class="notes">
-							<p>
-								Basic Git workflow:
-								<ol>
-									<li>You modify files in your working directory.</li>
-									<li>You stage the files, adding snapshots of them to your staging area.</li>
-									<li>You do a commit, which takes the files as they are in the staging area and stores that snapshot permanently to your Git directory.</li>
-								</ol>
-							</p>
-						</aside>
-					</section>
-				</section>
-
-				<section>
-					<h2>Command line or GUI?</h2>
-					<p>
-						Obviously: command line<br/>
-						<small>If you want to take full advantage of git commands.</small>
-					</p>
-					<p>
-						Or you can use GUIs (Eclipse plugin, Smart Git, or whatever).<br/>
-						<small>If you want to use basic commands in a nice looking way.</small>
-					</p>
-					<aside class="notes">
-          </aside>
-				</section>
-
-				<section>
-					<section>
-						<h2>Main workflows</h2>
-						<p>
-							You can work with Git in many ways.<br/>
-							Here are some commonly used workflows.<br/>
-							But you can pick up the best of each and mix it to fit your needs.<br/>
-							<small style="margin-top:60px">
-								Find more info about workflows on:<br/>
-								<a href="https://es.atlassian.com/git/tutorials/comparing-workflows/">https://es.atlassian.com/git/tutorials/comparing-workflows/</a>
-							</small>
-						</p>
-						<aside class="notes">
-	          </aside>
-					</section>
-					<section>
-						<h2>Centralized</h2>
-						<p style="margin-bottom: 40px">
-							Mostly, looks like SVN workflow.<br/>
-							But brings some of the Git power.
-						</p>
-						<ul>
-							<li>Single branch used (master)</li>
-							<li>Conflicts are managed by: <br/>fetching from remote / rebasing / pushing</li>
-							<li>Linear history</li>
-						</ul>
-						<aside class="notes">
-							Single point of entry for every developper<br/>
-							trunk (SVN) = master (Git)<br/>
-							Difference: Every local commits are pushed at the same time.<br/>
-							Linear history: if conflits, you must rebase so that your work appears on top of other developpers' work.<br/>
-	          </aside>
-					</section>
-					<section>
-						<h2>Feature branch</h2>
-						<ul style="margin-bottom: 40px">
-							<li>1 feature = 1 branch (with explicit name)</li>
-							<li>Multiple developers can work on the same feature</li>
-							<li>Work in progress do not disturb main codebase</li>
-							<li>master contains official/production-ready code</li>
-							<li>Easy CI on master branch</li>
-							<li>Pull request ready</li>
-						</ul>
-						<img src="assets/feature-branch-workflow.svg" width="60%" style="background: white; border:none; box-shadow:none;"/>
-						<aside class="notes">
-							Easy continuous integration: master branch should never contain broken code.<br/>
-							Pull requests: can be use between developers to discuss others features:<br/>
-							<ul>
-								<li>if someone needs some help</li>
-								<li>if a code review is needed</li>
-							</ul>
-							This workflow still uses a centralized repo.
-	          </aside>
-					</section>
-					<section>
-						<h2>Gitflow</h2>
-						<ul>
-							<li>Strict and robust branching model</li>
-							<li>Based on Feature Branching working</li>
-							<li>
-								Adds specific branches for specific actions:
-								<ul>
-									<li>master = production release history (tags)</li>
-									<li>develop = features integration</li>
-									<li>release = production release build (+ feature fix)</li>
-									<li>hotfix = quick production maintenance patches</li>
-								</ul>
-							</li>
-						</ul>
-						<p>
-							<small style="margin-top:50px">
-								See original description of this worflow by Vincent Drissen:<br/>
-								<a href="http://nvie.com/posts/a-successful-git-branching-model/">http://nvie.com/posts/a-successful-git-branching-model/</a><br/>
-								And really good branching tools:<br/>
-								<a href="http://danielkummer.github.io/git-flow-cheatsheet/index.html">http://danielkummer.github.io/git-flow-cheatsheet/index.html</a>
-							</small>
-						</p>
-						<aside class="notes">
-							This workflow still uses a centralized repo.
-	          </aside>
-					</section>
-					<section>
-						<h2>Gitflow</h2>
-						<img src="assets/gitflow-workflow.svg" width="80%" style="background: white; border:none; box-shadow:none;"/>
-						<aside class="notes">
-	          </aside>
-					</section>
-					<section>
-						<h2>Forking</h2>
-						<ul>
-							<li>No centralized repo</li>
-							<li>
-								Every developer owns 2 local repositories:
-								<ul>
-									<li>a public server one</li>
-									<li>a private client one</li>
-								</ul>
-							</li>
-							<li>Developers push to their local server</li>
-							<li>Developers can pull from official server</li>
-							<li>Project maintainer can pull from dervelopers repos</li>
-							<li>Project maintainer (only) can push to the official repo</li>
-							<li>Secure workflow</li>
-							<li>Ideal for open source projects</li>
-						</ul>
-						<aside class="notes">
-	          </aside>
-					</section>
-					<section>
-						<h2>Forking</h2>
-						<img src="assets/forking-workflow.svg" width="80%" style="background: white; border:none; box-shadow:none;"/>
-						<aside class="notes">
-	          </aside>
-					</section>
-					<section>
-						<h2>Branch Per Feature</h2>
-						<p>
-							Described by <a href="https://twitter.com/adymitruk">Adam Dymitruk</a>, this workflow is a bit more "confidential" but it brings some new ideas:
-							<ul>
-								<li>Features are small, atomic, flexible</li>
-								<li>Every feature branch have the same source commit</li>
-								<li>You must integrate as often as possible</li>
-								<li>Conflict resolutions are shared using Git rerere</li>
-								<li>You can easily take a feature out of a release build</li>
-							</ul>
-						</p>
-						<small style="margin-top:40px">
-							See <a href="http://dymitruk.com/blog/2012/02/05/branch-per-feature/">http://dymitruk.com/blog/2012/02/05/branch-per-feature/</a>
-						</small>
-						<aside class="notes">
-	          </aside>
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h2>Pull request</h2>
-						<ul>
-							<li>Collaborate to a project (notify team members)</li>
-							<li>Propose code instead of pushing it</li>
-							<li>Forum to discuss about the proposed feature </li>
-							<li>Code reviewed by team members before being merged into the project</li>
-							<li>Follow-up commits</li>
-							<li>The whole activity around the proposed feature is stored in the pull request</li>
-							<li>Incompatible with Centralized workflow</li>
-						</ul>
-						<aside class="notes">
-							Instead of directly pushing his code on a repo, a developper who wants to collaborate to a project can send a pull request.<br/>
-							His code will be reviewed before being integrated, and developpers can discuss of the feature to integrate in a user-friendly web interface.<br/>
-							<br/>
-							Follow-up commits can be added by teammates to modify the feature before integrating it.<br/>
-							<br/>
-							Discussions about proposed feature aren't lost in emails.
-							<br/>
-							Incompatible with Centralized workflow because it needs 2 repos or 2 branches.
-						</aside>
-					</section>
-					<section>
-						<h2>Pull request general process</h2>
-						<p>A developper wants to collaborate to a project. What he has to do is:</p>
-						<ul>
-							<li>Clone the project / Fork and clone the project</li>
-							<li>Create a new local branch</li>
-							<li>Code, code, code...</li>
-							<li>Push branch to a public repo</li>
-							<li>Fill a pull request form</li>
-							<li>Project teammates review, [discuss, modify] the code</li>
-							<li>Project maintainer merges the feature into an offical branch</li>
-							<li>Project maintainer closes the pull request</li>
-						</ul>
-						<aside class="notes">
-						</aside>
-					</section>
-					<section>
-						<h2>Pull request example</h2>
-						<h3>Open</h3>
-						<img src="assets/pull-request-review-page.png" width="50%" style="background: none; border:none; box-shadow:none;"/>
-						<aside class="notes">
-						</aside>
-					</section>
-					<section>
-						<h2>Pull request example</h2>
-						<h3>Discuss</h3>
-						<img src="assets/pull-request-discussion.png" width="60%" style="background: none; border:none; box-shadow:none;"/>
-						<aside class="notes">
-						</aside>
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h2>Migrating from SVN to Git</h2>
-						<p>
-							Git provides importers for the most common VCSs.<br/>
-							For SVN, you just need to follow these steps:
-						</p>
-						<ul>
-							<li>
-								Create a "SVN IDs / Git Authors" mapping file (ex: user.txt):<br/>
-								<pre><code data-trim data-noescape class="hljs">svnUser = Author NAME &lt;author@email.org&gt;</code></pre>
-							</li>
-							<li>
-								Import SVN repo with:
-								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git svn clone http://svn_repo/ \ <br/> --authors-file=users.txt --no-metadata -s git_project</code></pre>
-							</li>
-							<li>
-								Importing a SVN repo creates branches instead of tags.<br/>
-								Convert them to real Git tags:
-								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ cp -Rf .git/refs/remotes/origin/tags/* .git/refs/tags/<br/>$ rm -Rf .git/refs/remotes/origin/tags</code></pre>
-							</li>
-						</ul>
-						<aside class="notes">
-	          </aside>
-					</section>
-					<section>
-						<ul>
-							<li>
-								Then convert others SVN remote refs to Git local branches:
-								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ cp -Rf .git/refs/remotes/* .git/refs/heads/ <br/>$ rm -Rf .git/refs/remotes</code></pre>
-							</li>
-							<li>
-								And eventually, add a reference to your Git server as a project "remote" and push it:
-								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git remote add origin git@my-git-server:myrepository.git <br/>$ git push origin --all</code></pre>
-							</li>
-						</ul>
-					</section>
-					<section data-background="assets/carlton.gif">
-						<h1>Here you are!</h1>
-						<h2>... Ready to use Git! ...</h2>
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h1>The end</h1>
-						<p class="fragment">Of course not...</p>
-						<p class="fragment">Let's practice a bit!</p>
-						<aside class="notes">
-	          </aside>
-					</section>
-					<section>
-							<h1>First lesson:</h1>
-							<h2>working with branches</h2><br/>
-							<h3>Start by checking out a branch:</h3>
-  						<pre><code data-trim data-noescape class="hljs bash">$ git checkout f-demo-working_with_branches</code></pre>
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h2>Working with branches</h2>
-						<ul>
-							<li>
-								Listing branches:<br/>
-								<ul>
-									<li>
-										local:<br/>
-										<pre><code data-trim data-noescape class="hljs bash">$ git branch</code></pre>
-									</li>
-									<li>
-										remote:<br/>
-										<pre><code data-trim data-noescape class="hljs bash">$ git branch -r</code></pre>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<aside class="notes">
-	          </aside>
-					</section>
-					<section>
-						<h2>Working with branches</h2>
-						<ul>
-							<li>
-								Creating a new branch:
-								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git branch f-demo-new_branch<br/>$ git checkout f-demo-new_branch</code></pre>
-								or
-								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git checkout -b f-demo-new_branch</code></pre>
-							</li>
-							<li>
-								Pushing a branch to remote server:
-								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git push origin f-demo-new_branch</code></pre>
-							</li>
-							<li>
-								Pulling code from remote:
-								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git pull origin f-demo-new_branch</code></pre>
-							</li>
-						</ul>
-						<aside class="notes">
-							Create the given branch, and show it exists only localy.<br/>
-							If you want, you can push it and show it appears on remote server.<br/>
-	          </aside>
-					</section>
-					<section>
-						<h2>Working with branches</h2>
-						<ul>
-							<li>
-								Merging 2 branches:
-								<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git checkout [branch_to_merge_to]<br/>$ git merge [branch_to_merge]</code></pre>
-								You may have to deal with conflicts, <br/>we'll see how to do so later.
-							</li>
-						</ul>
-						<aside class="notes">
-							Try this after you added some commits (chapter: f-demo-working_with_commits).
-	          </aside>
-					</section>
-					<section>
-						<h2>Working with branches</h2>
-						<ul>
-							<li>
-								Deleting a branch:
-								<ul>
-									<li>
-										Local:
-										<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git branch -D [branch_to_delete]</code></pre>
-										-D forces deletion, where -d don't. It's the same as:
-										<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git branch --delete --force [branch_to_delete]</code></pre>
-									</li>
-									<li>
-										Remote:
-										<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git push origin --delete [remote_branch_to_delete]</code></pre>
-										or
-										<pre><code data-trim data-noescape class="hljs bash" style="word-wrap: break-word;">$ git push origin :[remote_branch_to_delete]</code></pre>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<aside class="notes">
-							-D forces deletion even if local branch is not fully merged with its upstream branc
-	          </aside>
-					</section>
-				</section>
-
-				<section>
-          <h3>OK, now you know a bit more about branches</h3>
-					<p>
-						We should talk about commits:
-						<pre><code data-trim data-noescape class="hljs bash">$ git checkout f-demo-working_with_commits</code></pre>
-						<br/>
-						<small>See how you can swith to another branch <br/>(if you don't get if locally, Git will download it)</small>
-					</p>
-				</section>
-
-				<section>
-          <h3>Thanks for listening</h3>
-					<p>
-						Licensed under the <a href="https://github.com/cdue/git-basics-presentation/blob/master/LICENSE-MIT">MIT license</a>.
-					</p>
-					<hr>
-					<p>
-						<small>Created with <a href="http://lab.hakim.se/reveal-js">reveal.js</a> - The HTML Presentation Framework</small>
-					</p>
-				</section>
-
-			</div>
-
-		</div>
-
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
-
-		<script>
-
-			// Full list of configuration options available at:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
-
-				transition: 'slide', // none/fade/slide/convex/concave/zoom
-
-				// Optional reveal.js plugins
-				dependencies: [
-					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js', async: true },
-					{ src: 'plugin/notes/notes.js', async: true }
-				]
-			});
-
-		</script>
-
-		<div class="hidden-mobile">
-			<div style="display: block; position: absolute; bottom: 14px; left: 50%; margin-left: -200px; z-index: 20;">
-				<table>
-					<tr>
-						<td>
-							<a href="https://twitter.com/cedricdue" class="twitter-follow-button" data-show-count="false">Follow @cedricdue</a>
-							<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-						</td>
-						<td>
-							<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://github.com/cdue/git-basics-presentation" data-text="Git basics - Presentation for a little live coding session" data-via="cedricdue" data-hashtags="gitbasics">Tweet</a>
-							<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-						</td>
-						<td>
-							<iframe src="https://ghbtns.com/github-btn.html?user=cdue&type=follow&count=true" frameborder="0" scrolling="0" width="150px" height="20px"></iframe>
-						</td>
-						<td>
-							<iframe src="https://ghbtns.com/github-btn.html?user=cdue&repo=git-basics-presentation&type=star&count=true" frameborder="0" scrolling="0" width="150px" height="20px"></iframe>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-	</body>
+        </div>
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
+        <script>
+            // Full list of configuration options available at:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+            
+                transition: 'slide', // none/fade/slide/convex/concave/zoom
+            
+                // Optional reveal.js plugins
+                dependencies: [
+                    { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'plugin/zoom-js/zoom.js', async: true },
+                    { src: 'plugin/notes/notes.js', async: true }
+                ]
+            });
+            
+        </script>
+        <div class="hidden-mobile">
+            <div style="display: block; position: absolute; bottom: 14px; left: 50%; margin-left: -200px; z-index: 20;">
+                <table>
+                    <tr>
+                        <td>
+                            <a href="https://twitter.com/cedricdue" class="twitter-follow-button" data-show-count="false">Follow @cedricdue</a>
+                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                        </td>
+                        <td>
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://github.com/cdue/git-basics-presentation" data-text="Git basics - Presentation for a little live coding session" data-via="cedricdue" data-hashtags="gitbasics">Tweet</a>
+                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                        </td>
+                        <td>
+                            <iframe src="https://ghbtns.com/github-btn.html?user=cdue&type=follow&count=true" frameborder="0" scrolling="0" width="150px" height="20px"></iframe>
+                        </td>
+                        <td>
+                            <iframe src="https://ghbtns.com/github-btn.html?user=cdue&repo=git-basics-presentation&type=star&count=true" frameborder="0" scrolling="0" width="150px" height="20px"></iframe>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </body>
 </html>
