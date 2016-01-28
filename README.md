@@ -73,3 +73,19 @@ If you used the provided DockerFile then you're running reveal.js on a local web
 Press 'S' key on your keyboard and you'll get another browser window containing the slide you're presenting, a preview of next slide, a timer, and (wait for it...) you speaker notes!
 
 ### Storyboard
+- Slides 1, 1/1: What is Git?
+- Slides 2 to 2/2: Git VS older VCSs
+- Slides 3, 3/1: The Git 3 states
+- Slide 4: Command line or GUI?
+- Slides 5 to 5/7: Git workflows (Centralized, Feature Branch, GitFlow, Forking, Branch Per Feature)
+- Slides 6 to 6/3: Pull request
+- Slides 7 to 7/2: Migrating from SVN to Git
+- Slides 8, 8/1: Fake end...
+- Slides 9 to 9/3 (needs a branch switch): "working with branches" demo
+- Slide 10: Introducing "working with commits" demo
+- Slides 11 to 11/2 (needs a branch switch): "working with commits" demo
+- Slides 12, 13: Introducing "learn git magic" demo
+- Slides 14 to 14/2, 15, 16 to 16/2 (needs a branch switch): "git bisect" demo
+- Slide 17: Introducing "git rebase" demo
+- Slides 18 to 18/4, 19 (needs a branch switch): "git rebase" demo
+- Slides 20, 21: The End...
