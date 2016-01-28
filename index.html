@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Git Basics presentation</title>
+        <title>Git Basics - Live coding session</title>
         <meta name="description" content="A presentation about Git basics with some coding examples">
         <meta name="author" content="Cédric Dué">
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -702,7 +702,51 @@
                     <aside class="notes">
                     </aside>
                 </section>
-                
+                <section>
+                    <section>
+                        <h2>What is "git rebase" for?</h2>
+                        <p>
+                            Basically, it allows to merge 2 branches...<br/>
+                        </p>
+                        <p class="fragment">
+                            So why shouldn't we use "git merge"?
+                        </p>
+                        <p class="fragment">
+                            Because "rebase" allows you to rewrite your git history!
+                        </p>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Merge VS Rebase</h2>
+                        <p>
+                            Merge<br/>
+                            <ul>
+                                <li>mixes the code from 2 branches</li>
+                                <li>Create a merge commit</li>
+                            </ul>
+                        </p>
+                        <p>
+                            Rebase<br/>
+                            <ul>
+                                <li>Rewinds code from current branch until it finds a common ancestor in the other branch</li>
+                                <li>Applies commits from this other branch on top of that commun ancestor</li>
+                                <li>Applies new commits from current branch (old version) on top of commits coming from the other branch</li>
+                            </ul>
+                        </p>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Git Rebase</h2>
+                        <p>
+                            To be continued...
+                        </p>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                </section>
+
                 <section>
                     <h3>Thanks for listening</h3>
                     <p>
