@@ -730,7 +730,7 @@
                             Rebase<br/>
                             <ul>
                                 <li>Rewinds code from current branch until it finds a common ancestor in the other branch</li>
-                                <li>Applies commits from this other branch on top of that commun ancestor</li>
+                                <li>Applies commits from this other branch on top of that commun ancestor (last commit becomes the new common ancestor)</li>
                                 <li>Applies new commits from current branch (old version) on top of commits coming from the other branch</li>
                             </ul>
                         </p>
@@ -738,13 +738,45 @@
                         </aside>
                     </section>
                     <section>
-                        <h2>Git Rebase</h2>
                         <p>
-                            To be continued...
+                            A feature branch was created from master but I'd like to get those new commits that appeared on master after the feature branch creation.
                         </p>
+                        <img src="assets/before_rebase.svg" width="60%" style="background: none; border:none; box-shadow:none;"/>
                         <aside class="notes">
                         </aside>
                     </section>
+                    <section>
+                        <p>
+                            Here's what happen if I merge master into my feature branch:
+                        </p>
+                        <img src="assets/merge.svg" width="60%" style="background: none; border:none; box-shadow:none;"/>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <p>
+                            And here is the result of the rebase of my feature branch on master:
+                        </p>
+                        <img src="assets/after_rebase.svg" width="60%" style="background: none; border:none; box-shadow:none;"/>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <h2>Let's experiment that rebase</h2>
+                    <p style="display:inline-block;width:80%">
+                        I know that my current branch diverged from master as some commits have been added since I created it.<br/>
+                        That would be nice to get those, isn't it?
+                    </p>
+                    <pre><code data-trim data-noescape class="hljs bash">$ git checkout f-demo-working_with_rebase<br/>$ git rebase master</code></pre>
+                    <aside class="notes">
+                    </aside>
+                </section>
+                <section>
+                    <h2>That's all folks...</h2>
+                    <img src="assets/adopt_me.jpg" width="60%" class="fragment" style="background: none; border:none; box-shadow:none;"/>
+                    <aside class="notes">
+                    </aside>
                 </section>
 
                 <section>
