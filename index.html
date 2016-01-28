@@ -603,7 +603,6 @@
                         So let's improve your Git power!
                     </p>
                     <aside class="notes">
-                        
                     </aside>
                 </section>
                 <section>
@@ -611,9 +610,85 @@
                     <img src="assets/merlin.png" width="30%" style="background: none; border:none; box-shadow:none;"/>
                     <pre class="fragment"><code data-trim data-noescape class="hljs bash">$ git checkout f-demo-learn_git_magic</code></pre>
                     <aside class="notes">
-                        
                     </aside>
                 </section>
+                <section>
+                    <section>
+                        <p>
+                            What would you do if you just realized that your unit tests are broken?<br/><br/>
+                            Worst! You realized tons of commits were added since last time you launched your UTs?
+                        </p>
+                        <img src="assets/sheldon.gif" width="50%" class="fragment" style="background: none; border:none; box-shadow:none;"/>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <img src="assets/jenkins.jpg" width="30%" style="background: none; border:none; box-shadow:none; display:inline; margin-right:10%"/>
+                        <img src="assets/travis.jpg" width="30%" style="background: none; border:none; box-shadow:none; display:inline"/>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <p>
+                            OK... OK... but RELAX!
+                        </p>
+                        <img src="assets/relax.gif" width="60%" style="background: none; border:none; box-shadow:none"/>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                </section>
+                <section data-background="assets/tada.gif">
+                    <h2>Use Git Bisect!</h2>
+                    <aside class="notes">
+                    </aside>
+                </section>
+                <section>
+                    <section>
+                        <h3>Git Bisect</h3>
+                        <p>
+                            It will find the first commit that broke UTs.<br/>
+                            You need 3 things to achieve this goal:
+                        </p>
+                        <ul style="width:80%;margin-top:30px">
+                            <li>
+                                The hash of the last commit where UTs were OK.<br/>
+                                <small>Or approximatively. You can take an older one.</small><br/>
+                                Find it using:
+                                <pre><code data-trim data-noescape class="hljs bash">$ git log [--oneline --decorate]</code></pre>
+                            </li>
+                            <li>
+                                The hash of a commit where UTs are broken (current one for example).
+                            </li>
+                            <li>
+                                A Unit Test
+                            </li>
+                        </ul>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h3>Now run it:</h3>
+                        <p>
+                            <pre><code data-trim data-noescape class="hljs bash">$ git bisect start &lt;hash of bad commit&gt; &lt;hash of good commit&gt; --<br/>$ git bisect run ./unit_test.sh</code></pre>
+                        
+                            It will inform you it can find which commit broke the test in N steps.<br/>
+                            Then it will give you the hash of that commit.<br/><br/>
+                            After you found it, don't forget to clean up the bisection state to return to your original HEAD state:
+                            <pre><code data-trim data-noescape class="hljs bash">$ git bisect reset</code></pre>
+                            If you'd prefer to reset back to that bad commit, use:
+                            <pre><code data-trim data-noescape class="hljs bash">$ git bisect reset bisect/bad</code></pre>
+                        </p>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                    <section>
+                        <h3>So what?</h3>
+                        <img src="assets/impressed.jpg" width="70%" class="fragment" style="background: none; border:none; box-shadow:none;"/>
+                        <aside class="notes">
+                        </aside>
+                    </section>
+                </section>
+                
                 <section>
                     <h3>Thanks for listening</h3>
                     <p>
